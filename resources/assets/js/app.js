@@ -16,7 +16,28 @@ window.Vue = require('vue');
  */
 
 Vue.component('example', require('./components/Example.vue'));
+Vue.component('chat', require('./components/Chat.vue'));
+Vue.component('chat-message', require('./components/ChatMessage.vue'));
+Vue.component('chat-users', require('./components/ChatUsers.vue'));
+Vue.component('chat-input', require('./components/ChatInput.vue'));
+Vue.component('chat-user', require('./components/ChatUser.vue'));
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    data: {
+        messages: [],
+        users: []
+    },
+    methods: {
+        pushMessage(message) {
+            this.messages.push(message);
+        },
+        pushUser(user) {
+            this.users.push(user);
+        },
+        pullUser(user) {
+            const userIndex = this.users.indexOf(user);
+            userIndex !== -1 && this.users.splice(userIndex, 1);
+        }
+    }
 });
