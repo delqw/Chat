@@ -1,13 +1,14 @@
 <template>
-  <div class="col-md-12 chat-input-col">
+  <div class="col-md-12 col-sm-12 col-xs-12 chat-input-col">
         <div class="panel panel-default chat-input">
             <div class="panel-body">
                 <div class="input-group" v-if="!isAuth">
-                  <input type="text" class="form-control" placeholder="Введите ваше имя..." v-model="name" v-on:keyup.enter="login">
+                  <input type="text" class="form-control" placeholder="Введите ваше имя..." v-model="name" v-on:keyup.enter="login" v-on:keyup="validate">
                   <span class="input-group-btn">
                     <button class="btn btn-secondary" type="button" v-on:click="login">Войти</button>
                   </span>
                 </div>
+                <div class="wrong-name" v-show="wrongName">Имя должно быть не менее трёх символов</div>
                 <div class="input-group" v-if="isAuth">
                   <input type="text" class="form-control" placeholder="Напишите сообщение..." v-model="message" v-on:keyup.enter="sendMessage">
                   <span class="input-group-btn">
@@ -25,18 +26,31 @@ export default {
     return {
       message: '',
       name: localStorage.getItem('name'),
-      isAuth: !!localStorage.getItem('name')
+      isAuth: window.isAuth,
+      wrongName: false
     }
   },
   methods: {
     login() {
+      if (this.name.length < 3) return this.wrongName = true;
       localStorage.setItem('name', this.name);
-      this.isAuth = true;
+      axios.post('/login', { name: this.name }).then((res) => {
+        if (res.data && res.data.name) {
+          this.isAuth = true;
+          localStorage.setItem('name', res.data.name);
+          Echo.leave('chat');
+          this.$emit('login');
+        }
+      });
+    },
+    validate() {
+      if (this.name.length < 3) return this.wrongName = true;
+      this.wrongName = false;
     },
     sendMessage() {
       this.$emit('newmessage', {
-        name: this.name,
-        text: this.message
+        text: this.message,
+        name: this.name
        });
       this.message = '';
     }
@@ -54,5 +68,9 @@ export default {
 
   .chat-input-col { 
     padding-bottom: 0;
+  }
+
+  .wrong-name {
+    color: #ff0000;
   }
 </style>

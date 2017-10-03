@@ -30,14 +30,43 @@ const app = new Vue({
     },
     methods: {
         pushMessage(message) {
+            axios.post('/message', message);
             this.messages.push(message);
         },
-        pushUser(user) {
+        subscribe() {
+            Echo.join('chat')
+                .here(this.here)
+                .joining(this.joining)
+                .leaving(this.leaving)
+                .listen('MessageEvent', this.messageEventListner);
+        },
+        here(users) {
+            this.users = users.filter((el) => el.id !== 0);
+        },
+        joining(user) {
+            if (user.id === 0) return;
             this.users.push(user);
         },
-        pullUser(user) {
+        leaving(user) {
+            if (user.id === 0) return;
             const userIndex = this.users.indexOf(user);
-            userIndex !== -1 && this.users.splice(userIndex, 1);
+            if (userIndex !== -1) this.users.splice(userIndex, 1);
+        },
+        messageEventListner(e) {
+            this.messages.push(e.message);
         }
+    },
+    created() {
+        axios.get('/messages').then((data) => {
+            let messages = data.data.map((el) => {
+                return { id: el.id, name: el.user.name, text: el.text }
+            });
+            this.messages = messages;
+        });
+        this.subscribe();
+    },
+    updated() {
+        let chat = document.getElementsByClassName('chat-body')[0];
+        chat.scrollTop = chat.scrollHeight;
     }
 });

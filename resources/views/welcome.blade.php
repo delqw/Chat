@@ -13,11 +13,14 @@
     <div class="container">
         <div class="row">
             <chat v-bind:messages="messages"></chat>
-            <chat-users v-on:connectuser="pushUser" v-on:disconnectuser="pullUser" v-bind:users="users"></chat-users>
-            <chat-input v-on:newmessage="pushMessage"></chat-input>
+            <chat-users v-bind:users="users"></chat-users>
+            <chat-input v-on:newmessage="pushMessage" v-on:login="subscribe"></chat-input>
         </div>
     </div>
   </div>
+  <script>
+      window.isAuth = {{\Illuminate\Support\Facades\Auth::check() ? 'true' : 'false'}};
+  </script>
   <script src="js/app.js" charset="utf8"></script>
 </body>
 </html>

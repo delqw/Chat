@@ -1,5 +1,5 @@
 <template>
-    <div class="col-md-8 chat-col">
+    <div class="col-md-8 col-sm-8 col-xs-8 chat-col">
         <div class="panel panel-default chat">
             <div class="panel-heading">Чат</div>
             <div class="panel-body chat-body">

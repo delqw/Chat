@@ -1,5 +1,5 @@
 <template>
-  <div class="col-md-4 chat-users-col">
+  <div class="col-md-4 col-sm-4 col-xs-4 chat-users-col">
         <div class="panel panel-default chat-users">
             <div class="panel-heading">Пользователи</div>
             <div class="panel-body chat-users-body">

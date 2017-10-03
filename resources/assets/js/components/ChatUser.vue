@@ -12,7 +12,7 @@ export default {
 
 
 <style>
-  .message {
+  .name {
     padding: 5px;
     word-wrap: break-word;
   }
