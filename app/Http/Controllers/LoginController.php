@@ -11,7 +11,7 @@ class LoginController extends Controller
     public function login(Request $request) {
         $name = $request->get('name');
         if (strlen($name) < 3) return response([], 403);
-        $user = User::firstOrCreate($name);
+        $user = User::firstOrCreate([ 'name' => $name ]);
         Auth::login($user);
         return $user;
     }
