@@ -48025,7 +48025,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     login: function login() {
       var _this = this;
 
-      if (this.name.length < 3) return this.wrongName = true;
+      if (!this.name || this.name.length < 3) return this.wrongName = true;
       localStorage.setItem('name', this.name);
       axios.post('/login', { name: this.name }).then(function (res) {
         if (res.data && res.data.name) {
@@ -48037,7 +48037,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       });
     },
     validate: function validate() {
-      if (this.name && this.name.length < 3) return this.wrongName = true;
+      if (!this.name || this.name.length < 3) return this.wrongName = true;
       this.wrongName = false;
     },
     sendMessage: function sendMessage() {

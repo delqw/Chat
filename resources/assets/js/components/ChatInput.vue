@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     login() {
-      if (this.name.length < 3) return this.wrongName = true;
+      if (!this.name || this.name.length < 3) return this.wrongName = true;
       localStorage.setItem('name', this.name);
       axios.post('/login', { name: this.name }).then((res) => {
         if (res.data && res.data.name) {
@@ -44,7 +44,7 @@ export default {
       });
     },
     validate() {
-      if (this.name && this.name.length < 3) return this.wrongName = true;
+      if (!this.name || this.name.length < 3) return this.wrongName = true;
       this.wrongName = false;
     },
     sendMessage() {
